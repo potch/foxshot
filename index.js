@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-let program = require('commander');
+const program = require('commander');
+const urllib = require('url');
 
 function collect(val, list) {
   let split = val.match(/^(\d+)x(\d+)$/);
   if (!split) {
-    console.warn(`Invalid dimensions "${val}", will be ignored.`);
+    console.warn(`invalid dimensions "${val}", will be ignored.`);
   } else {
     list.push([
       parseInt(split[1], 10),
@@ -24,22 +25,28 @@ program
 
 
 if (!program.dimension.length) {
-  console.error('No valid dimensions provided, defaulting to 1024x768');
+  console.error('no valid dimensions provided, defaulting to 1024x768');
   program.dimension = [[1024, 768]];
 }
 
 const VALID_CHANNELS = ['nightly', 'beta', 'release'];
 
 if (VALID_CHANNELS.indexOf(program.channel) === -1) {
-  console.error(`Invalid channel "${program.channel}", using "release".`);
+  console.error(`invalid channel "${program.channel}", using release`);
 }
 
 if (program.args[0]) {
   const capture = require('./capture').capture;
+  let url = program.args[0];
+  let parsed = urllib.parse(url);
+  if (!parsed.protocol) {
+    console.error('no protocol provided, assuming http://');
+    url = 'http://' + url;
+  }
   capture({
     channel: program.channel,
     dimensions: program.dimension,
-    url: program.args[0]
+    url: url
   });
 } else {
   console.error('No URL provided.');
