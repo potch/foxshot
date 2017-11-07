@@ -2,6 +2,7 @@
 
 const program = require('commander');
 const urllib = require('url');
+const package = require('./package.json');
 
 function collect(val, list) {
   let split = val.match(/^(\d+)x(\d+)$/);
@@ -17,7 +18,7 @@ function collect(val, list) {
 }
 
 program
-  .version('1.0.0')
+  .version(package.version)
   .usage('[options] <url>')
   .option('-c, --channel [channel]', 'Use specified channel [release]', 'release')
   .option('-d, --dimension [size]', 'Capture at the specified dimensons [1024x768]', collect, [])
