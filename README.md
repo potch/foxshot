@@ -4,7 +4,7 @@ Capture web page screenshots using headless Firefox!
 
 ## Install
 
-`npm install -g foxshot`;
+`npm install -g foxshot`
 
 Requires a copy of Firefox on your computer.
 
