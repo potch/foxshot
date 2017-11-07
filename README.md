@@ -11,7 +11,7 @@ Requires a copy of Firefox on your computer.
 ## Usage
 
 ```
-Usage: index [options] <url>
+Usage: foxshot [options] <url>
 
 
 Options:
