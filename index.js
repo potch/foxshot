@@ -22,6 +22,7 @@ program
   .usage('[options] <url>')
   .option('-c, --channel [channel]', 'Use specified channel [release]', 'release')
   .option('-d, --dimension [size]', 'Capture at the specified dimensons [1024x768]', collect, [])
+  .option('-p, --prefix [prefix]', 'Output prefix e.g. prefix_[size].png [screenshot]', 'screenshot')
   .parse(process.argv);
 
 
@@ -47,7 +48,8 @@ if (program.args[0]) {
   capture({
     channel: program.channel,
     dimensions: program.dimension,
-    url: url
+    url: url,
+    prefix: program.prefix || 'screenshot'
   });
 } else {
   console.error('No URL provided.');

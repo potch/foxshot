@@ -3,8 +3,9 @@ require('geckodriver');
 const By = webdriver.By;
 const firefox = require('selenium-webdriver/firefox');
 const fs = require('fs');
+const urllib = require('url');
 
-exports.capture = async function capture({ channel, dimensions, url }) {
+exports.capture = async function capture({ channel, dimensions, url, prefix }) {
 
   let binary;
   switch (channel) {
@@ -28,8 +29,12 @@ exports.capture = async function capture({ channel, dimensions, url }) {
     .setFirefoxOptions(options)
     .build();
 
+  if (!prefix) {
+    prefix = urllib.parse(url).hostname;
+  }
+
   try {
-    await runTest({ driver, url, dimensions });
+    await runTest({ driver, url, dimensions, prefix });
   } catch (e) {
     console.error('Error during capture:', e);
   } finally {
@@ -39,7 +44,7 @@ exports.capture = async function capture({ channel, dimensions, url }) {
 
 
 
-async function runTest({ driver, url, dimensions }) {
+async function runTest({ driver, url, dimensions, prefix }) {
   let {innerSize, outerSize} = await driver.executeScript(`
     return {
       outerSize: {
@@ -69,7 +74,7 @@ async function runTest({ driver, url, dimensions }) {
     await driver.sleep(1000);
     let data = await driver.takeScreenshot();
     let b = Buffer.from(data, 'base64');
-    fs.writeFileSync(`./${string}.png`, b);
+    fs.writeFileSync(`./${prefix}_${string}.png`, b);
   }
 
   return true;
