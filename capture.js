@@ -1,6 +1,5 @@
 const webdriver = require('selenium-webdriver');
 require('geckodriver');
-const By = webdriver.By;
 const firefox = require('selenium-webdriver/firefox');
 const fs = require('fs');
 const urllib = require('url');
